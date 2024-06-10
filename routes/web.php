@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\NewsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('news', [NewsController::class, 'index'])->name('news.index');
+    Route::post('news/update', [NewsController::class, 'updateNews'])->name('news.update');
 });

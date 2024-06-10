@@ -4,12 +4,13 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\News;
+use App\Models\UpdateLog;
 use App\Services\ApiClients\SpecificClients\GuardianService;
 use App\Services\ApiClients\SpecificClients\NewsApiService;
 
 class FetchNews extends Command
 {
-    protected $signature = 'fetch:news';
+    protected $signature = 'fetch:news {type=automatic}';
     protected $description = 'Fetch news articles from NewsAPI and Guardian and save to the database';
 
     public function handle()
@@ -22,6 +23,9 @@ class FetchNews extends Command
         foreach ($newsSources as $source) {
             $this->storeArticleInDB($source);
         }
+
+        $type = $this->argument('type');
+        UpdateLog::create(['type' => $type]);
 
         $this->info('News fetched and saved successfully.');
     }
