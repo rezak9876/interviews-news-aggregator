@@ -1,66 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+---
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## News Aggregator
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project aims to create a system for fetching periodic news articles from multiple sources and displaying them on the front end. It involves fetching and storing news articles from specified sources, creating an API for displaying news with filtering options, and implementing a simple management dashboard.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 7.4
+- Composer
+- Node.js
+- npm or Yarn
+- MySQL or any other compatible database
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone the repository:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    ```bash
+    git clone https://github.com/rezak9876/interviews-news-aggregator.git
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Navigate into the project directory:
 
-## Laravel Sponsors
+    ```bash
+    cd interviews-news-aggregator
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3. Install PHP dependencies:
 
-### Premium Partners
+    ```bash
+    composer install
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+4. Install JavaScript dependencies:
 
-## Contributing
+    ```bash
+    npm install && npm run dev
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. Rename the `.env.example` file to `.env` and fill in your database information and add your NEWSAPI_KEY and GUARDIAN_KEY.
 
-## Code of Conduct
+6. Generate a new application key:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ```bash
+    php artisan key:generate
+    ```
 
-## Security Vulnerabilities
+7. Run the migrations to create the database tables:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```bash
+    php artisan migrate
+    ```
 
-## License
+## Usage
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Running the Project
+
+To run the project, start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+The project will be accessible at `http://localhost:8000`.
+
+### Updating News
+
+#### Manual Update
+
+1. Go to the admin panel (/admin/news).
+ (it needs authentication, you can add user from /register route.)
+2. Click the "Update News" button.
+
+#### Automatic Update
+
+The project includes a Laravel scheduler that automatically updates the news every hour.
+you can also use this command to fetch news.
+```bash
+php artisan fetch:news
+```
+
+### Fetching Filtered News (API)
+
+You can use the API to fetch filtered news based on different criteria such as source, and date. The endpoint for the API is:
+
+```
+GET /api/news
+```
+
+#### Parameters
+
+- `source`: Filter news articles by source.
+- `date`: Filter news articles by date.
+
+
+in date parameter you can use these values:
+- `ge`: greater or equal than
+- `g`:  greater than
+- `se`:  smaller or equal than
+- `s`:  smaller than
+
+Example request:
+```
+GET /api/news?source=NewsApi&date[ge]=2024-05-10&date[se]=2024-06-10
+```
+in this example we access the news which source is NewsApi and date is between 2024-05-10 and 2024-06-10.
+---
+
+This README provides an overview of the project, installation instructions, usage guidelines, and references to further documentation.
